@@ -1,0 +1,1 @@
+print('Algoritmo de Kmedias para la segmentación de Imagenes RGB')
