@@ -63,9 +63,16 @@ def kmedias(k, imagen, Error):
         medias_nuevas = inicializar_medias_RGB(k)
 
         for i in range(k):
-            medias_nuevas[i][0] = (suma_z[i][0]/contador_etiquetas[i])
-            medias_nuevas[i][1] = (suma_z[i][1]/contador_etiquetas[i])
-            medias_nuevas[i][2] = (suma_z[i][2]/contador_etiquetas[i])
+
+            if(contador_etiquetas[i] != 0):
+                medias_nuevas[i][0] = (suma_z[i][0]/contador_etiquetas[i])
+                medias_nuevas[i][1] = (suma_z[i][1]/contador_etiquetas[i])
+                medias_nuevas[i][2] = (suma_z[i][2]/contador_etiquetas[i])
+            
+            else:
+                medias_nuevas[i][0] = random.randint(0, 255)
+                medias_nuevas[i][1] = random.randint(0, 255)
+                medias_nuevas[i][2] = random.randint(0, 255)
 
             suma_error += distancia_euclidiana_RGB(medias[i], medias_nuevas[i])
 
@@ -75,12 +82,42 @@ def kmedias(k, imagen, Error):
     return medias,etiquetas
 
 
+def colorear_secciones(imagen_rgb, imagen_etiquetas, num_etiquetas):
+
+    filas, columnas, _ = imagen_rgb.shape
+
+    imagen_coloreada = np.zeros((filas, columnas,3))
+
+    colores_promedio = []
+
+    for etiqueta in range(num_etiquetas):
+        indices_etiqueta = np.where(imagen_etiquetas == etiqueta)
+        colores_etiqueta = imagen_rgb[indices_etiqueta]
+
+        color_promedio_etiqueta = np.round(np.mean(colores_etiqueta, axis=0)).astype(int)
+        colores_promedio.append(color_promedio_etiqueta)
 
 
+    for i in range(filas):
+        for j in range(columnas):
+
+            imagen_coloreada[i][j][0] = int(colores_promedio[int(imagen_etiquetas[i][j])][0])
+            imagen_coloreada[i][j][1] = int(colores_promedio[int(imagen_etiquetas[i][j])][1])
+            imagen_coloreada[i][j][2] = int(colores_promedio[int(imagen_etiquetas[i][j])][2])
+
+    return imagen_coloreada/255
+
+
+
+'''
+
+#-------------------------------------------------------------
 imagen_prueba = io.imread("images/202277_sat_15.jpg")
 
- 
 vectores_cluster, etiquetada = kmedias(3,imagen_prueba,0.5)
 
-plt.imshow(etiquetada)
+imagen_coloreada = colorear_secciones(imagen_prueba,etiquetada,3)
+plt.imshow(imagen_coloreada)
 plt.show()
+
+'''
