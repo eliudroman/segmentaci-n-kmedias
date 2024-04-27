@@ -112,13 +112,18 @@ def colorear_secciones(imagen_rgb, imagen_etiquetas, num_etiquetas):
 
 
 
+
+
 '''
 
 #-------------------------------------------------------------
 imagen_prueba = io.imread("images/202277_sat_15.jpg")
 
-vectores_cluster, etiquetada = kmedias(3,imagen_prueba,0.5)
+vectores_cluster, etiquetada,_ = kmedias(3,imagen_prueba,0.5)
 
 imagen_coloreada = colorear_secciones(imagen_prueba,etiquetada,3)
 plt.imshow(imagen_coloreada)
 plt.show()
+
+
+'''
