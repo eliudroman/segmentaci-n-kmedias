@@ -31,18 +31,20 @@ def kmedias(k, imagen, Error):
     medias = inicializar_medias_RGB(k)
     #medias = [[255,0,0],[0,255,0],[0,0,255]]
     distancias = []
-
+    
     etiquetas = np.zeros((filas, columnas))
     contador_etiquetas = np.zeros(k)
 
     suma_z = np.zeros((k, 3))
     suma_error = Error + 1
+    sum_distancias_minimas=0
 
     while(suma_error >= Error):
         etiquetas[:] = 0
         contador_etiquetas[:] = 0
         suma_z[:] = 0
         suma_error = 0
+        sum_distancias_minimas=0
 
         for i in range(filas):
             for j in range(columnas):
@@ -51,6 +53,7 @@ def kmedias(k, imagen, Error):
                     distancias.append(distancia_euclidiana_RGB(imagen[i][j], media))
 
                 distancia_minima = min(distancias)
+                sum_distancias_minimas+=distancia_minima
                 etiqueta = distancias.index(distancia_minima)
                 
                 etiquetas[i][j] = etiqueta
@@ -79,7 +82,7 @@ def kmedias(k, imagen, Error):
         medias = medias_nuevas
 
 
-    return medias,etiquetas
+    return medias,etiquetas,sum_distancias_minimas
 
 
 def colorear_secciones(imagen_rgb, imagen_etiquetas, num_etiquetas):
@@ -119,5 +122,3 @@ vectores_cluster, etiquetada = kmedias(3,imagen_prueba,0.5)
 imagen_coloreada = colorear_secciones(imagen_prueba,etiquetada,3)
 plt.imshow(imagen_coloreada)
 plt.show()
-
-'''
