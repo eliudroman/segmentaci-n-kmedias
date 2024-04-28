@@ -47,11 +47,11 @@ def grafica_pixeles3d(ruta_img):
 def koptimo(imagen,kinf,ksup,deltaT):
     distancias=[]
     for k in range(kinf,ksup+1):
-        distanciak,_,_=kmedias(k,imagen,deltaT)
+        _,_,distanciak=kmedias(k,imagen,deltaT)
         distancias.append(distanciak)
         print(f"Distancia minima para D_min({k})={distanciak}\n")
     indice_min=distancias.index(min(distancias))
-    indice_min=indice_min-(ksup-kinf+1)+ksup
+    indice_min=indice_min-(ksup-kinf)+ksup
 
     return indice_min
 
